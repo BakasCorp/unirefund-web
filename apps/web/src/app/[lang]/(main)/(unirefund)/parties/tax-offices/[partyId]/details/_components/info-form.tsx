@@ -34,9 +34,6 @@ export function TaxOfficeForm({
     schema: $UpdateTaxOfficeDto,
     extend: {
       "ui:className": "grid md:grid-cols-2 gap-4 items-end",
-      name: {
-        ...(isHeadquarter && {"ui:className": "col-span-full"}),
-      },
       telephone: {
         "ui:className": "col-span-full",
         "ui:field": "phone",
@@ -51,10 +48,6 @@ export function TaxOfficeForm({
       vatNumber: {
         ...(!isHeadquarter && disabled),
       },
-      parentId: {
-        ...(isHeadquarter && {"ui:widget": "hidden"}),
-        ...disabled,
-      },
     },
   });
   const router = useRouter();
@@ -66,7 +59,6 @@ export function TaxOfficeForm({
       disabled={isPending}
       formData={{
         ...taxOfficeDetails,
-        parentId: taxOfficeDetails.parentName || "",
         name: taxOfficeDetails.name || "",
       }}
       locale={lang}
@@ -75,24 +67,13 @@ export function TaxOfficeForm({
         startTransition(() => {
           void putTaxOfficeByIdApi({
             id: partyId,
-            requestBody: {
-              ...formData,
-              parentId: taxOfficeDetails.parentId,
-            },
+            requestBody: formData,
           }).then((res) => {
             handlePutResponse(res, router);
           });
         });
       }}
-      schema={{
-        ...$UpdateTaxOfficeDto,
-        properties: {
-          ...$UpdateTaxOfficeDto.properties,
-          parentId: {
-            type: "string",
-          },
-        },
-      }}
+      schema={$UpdateTaxOfficeDto}
       submitText={languageData["Form.TaxOffice.Update"]}
       uiSchema={uiSchema}
       withScrollArea={false}

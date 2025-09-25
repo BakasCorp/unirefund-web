@@ -39,7 +39,7 @@ export function TaxFreeForm({
     extend: {
       "ui:className": "grid md:grid-cols-2 gap-4 items-end",
       name: {
-        ...(isHeadquarter && {"ui:className": "col-span-full"}),
+        "ui:className": "col-span-full",
       },
       taxOfficeId: {
         "ui:widget": "taxOfficeWidget",
@@ -58,10 +58,6 @@ export function TaxFreeForm({
       vatNumber: {
         ...(!isHeadquarter && disabled),
       },
-      parentId: {
-        ...(isHeadquarter && {"ui:widget": "hidden"}),
-        ...disabled,
-      },
     },
   });
   const router = useRouter();
@@ -73,9 +69,8 @@ export function TaxFreeForm({
       disabled={isPending}
       formData={{
         ...taxFreeDetails,
-        parentId: taxFreeDetails.parentName || "",
         name: taxFreeDetails.name || "",
-        status: taxFreeDetails.status || "DRAFT",
+        status: taxFreeDetails.status,
       }}
       locale={lang}
       onSubmit={({formData}) => {
@@ -83,24 +78,13 @@ export function TaxFreeForm({
         startTransition(() => {
           void putTaxFreeByIdApi({
             id: partyId,
-            requestBody: {
-              ...formData,
-              parentId: taxFreeDetails.parentId,
-            },
+            requestBody: formData,
           }).then((res) => {
             handlePutResponse(res, router);
           });
         });
       }}
-      schema={{
-        ...$UpdateTaxFreeDto,
-        properties: {
-          ...$UpdateTaxFreeDto.properties,
-          parentId: {
-            type: "string",
-          },
-        },
-      }}
+      schema={$UpdateTaxFreeDto}
       submitText={languageData["Form.TaxFree.Update"]}
       uiSchema={uiSchema}
       widgets={{

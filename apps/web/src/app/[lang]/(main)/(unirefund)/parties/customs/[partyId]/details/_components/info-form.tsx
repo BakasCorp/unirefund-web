@@ -35,9 +35,6 @@ export function CustomForm({
     schema: $UpdateCustomDto,
     extend: {
       "ui:className": "grid md:grid-cols-2 gap-4 items-end",
-      name: {
-        ...(isHeadquarter && {"ui:className": "col-span-full"}),
-      },
       telephone: {
         "ui:className": "col-span-full",
         "ui:field": "phone",
@@ -52,10 +49,6 @@ export function CustomForm({
       vatNumber: {
         ...(!isHeadquarter && disabled),
       },
-      parentId: {
-        ...(isHeadquarter && {"ui:widget": "hidden"}),
-        ...disabled,
-      },
     },
   });
   const router = useRouter();
@@ -67,7 +60,6 @@ export function CustomForm({
       disabled={isPending}
       formData={{
         ...customDetails,
-        parentId: customDetails.parentName || "",
         name: customDetails.name || "",
       }}
       locale={lang}
@@ -76,24 +68,13 @@ export function CustomForm({
         startTransition(() => {
           void putCustomByIdApi({
             id: partyId,
-            requestBody: {
-              ...formData,
-              parentId: customDetails.parentId,
-            },
+            requestBody: formData,
           }).then((res) => {
             handlePutResponse(res, router);
           });
         });
       }}
-      schema={{
-        ...$UpdateCustomDto,
-        properties: {
-          ...$UpdateCustomDto.properties,
-          parentId: {
-            type: "string",
-          },
-        },
-      }}
+      schema={$UpdateCustomDto}
       submitText={languageData["Form.Custom.Update"]}
       uiSchema={uiSchema}
       withScrollArea={false}

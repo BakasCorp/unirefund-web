@@ -2,7 +2,7 @@
 import {Button} from "@/components/ui/button";
 import {toast} from "@/components/ui/sonner";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
-import type {UniRefund_CRMService_Merchants_MerchantDto} from "@repo/saas/CRMService";
+import type {UniRefund_CRMService_Merchants_MerchantListResponseDto} from "@repo/saas/CRMService";
 import type {
   UniRefund_FinanceService_RebateStatementHeaders_RebateStatementHeaderCreateDto,
   UniRefund_FinanceService_RebateStatementHeaders_RebateStatementHeaderDetailDto,
@@ -26,7 +26,7 @@ export default function RebateStatementForm({
   merchantList,
 }: {
   languageData: FinanceServiceResource;
-  merchantList: UniRefund_CRMService_Merchants_MerchantDto[];
+  merchantList: UniRefund_CRMService_Merchants_MerchantListResponseDto[];
 }) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -123,7 +123,7 @@ export default function RebateStatementForm({
                   }}
                   useDefaultSubmit={false}
                   widgets={{
-                    Merchant: CustomComboboxWidget<UniRefund_CRMService_Merchants_MerchantDto>({
+                    Merchant: CustomComboboxWidget<UniRefund_CRMService_Merchants_MerchantListResponseDto>({
                       languageData,
                       list: merchantList,
                       selectIdentifier: "id",

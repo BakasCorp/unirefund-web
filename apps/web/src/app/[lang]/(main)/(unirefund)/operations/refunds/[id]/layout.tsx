@@ -50,7 +50,13 @@ export default async function Layout({
         <RefundSummary refundDetails={refundDetailsResponse.data} />
       </div>
       <div className="h-full overflow-hidden rounded-md border md:row-span-2">
-        <RefundLocation refundPointDetails={refundDetailsResponse.data.refundPoint} />
+        <RefundLocation
+          refundPointDetails={{
+            ...refundDetailsResponse.data.refundPoint,
+            id: refundDetailsResponse.data.refundPoint.id || "",
+            name: refundDetailsResponse.data.refundPoint.name || "",
+          }}
+        />
         <Separator />
         <TravellerDetails
           lang={lang}

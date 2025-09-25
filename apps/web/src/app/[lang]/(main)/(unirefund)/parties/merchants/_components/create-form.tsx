@@ -15,8 +15,8 @@ import {useParams, useRouter} from "next/navigation";
 import {useCallback, useMemo, useState, useTransition} from "react";
 import {getBaseLink} from "@/utils";
 import type {CRMServiceServiceResource} from "@/language-data/unirefund/CRMService";
-import {CheckIsFormReady} from "../../_components/is-form-ready";
 import {PhoneWithTypeField} from "../../_components/contact/phone-with-type";
+import {CheckIsFormReady} from "../../_components/is-form-ready";
 
 const DEFAULT_FORMDATA: CreateMerchantDto = {
   name: "",
@@ -32,6 +32,7 @@ const DEFAULT_FORMDATA: CreateMerchantDto = {
     type: "WORK",
     isPrimary: true,
   },
+  externalStoreIdentifier: "0",
   address: {
     isPrimary: true,
     type: "WORK",

@@ -31,6 +31,7 @@ const DEFAULT_FORMDATA: CreateRefundPointDto = {
     type: "WORK",
     isPrimary: true,
   },
+  vatNumber: "0",
   address: {
     isPrimary: true,
     type: "WORK",

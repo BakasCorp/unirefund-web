@@ -2,22 +2,22 @@
 import {Button} from "@/components/ui/button";
 import {toast} from "@/components/ui/sonner";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
-import type {UniRefund_CRMService_Merchants_MerchantDto} from "@repo/saas/CRMService";
+import {
+  postVatStatementHeaderApi,
+  postVatStatementHeadersFormDraftApi,
+} from "@repo/actions/unirefund/FinanceService/post-actions";
+import {SchemaForm} from "@repo/ayasofyazilim-ui/organisms/schema-form";
+import {createUiSchemaWithResource} from "@repo/ayasofyazilim-ui/organisms/schema-form/utils";
+import {CustomComboboxWidget} from "@repo/ayasofyazilim-ui/organisms/schema-form/widgets";
+import type {UniRefund_CRMService_Merchants_MerchantListResponseDto} from "@repo/saas/CRMService";
 import type {
   UniRefund_FinanceService_VATStatementHeaders_VATStatementHeaderCreateDto,
   UniRefund_FinanceService_VATStatementHeaders_VATStatementHeaderDto,
 } from "@repo/saas/FinanceService";
 import {$UniRefund_FinanceService_VATStatementHeaders_VATStatementHeaderCreateDto} from "@repo/saas/FinanceService";
-import {SchemaForm} from "@repo/ayasofyazilim-ui/organisms/schema-form";
-import {createUiSchemaWithResource} from "@repo/ayasofyazilim-ui/organisms/schema-form/utils";
-import {CustomComboboxWidget} from "@repo/ayasofyazilim-ui/organisms/schema-form/widgets";
+import {handlePostResponse} from "@repo/utils/api";
 import {useParams, useRouter} from "next/navigation";
 import {useState, useTransition} from "react";
-import {handlePostResponse} from "@repo/utils/api";
-import {
-  postVatStatementHeaderApi,
-  postVatStatementHeadersFormDraftApi,
-} from "@repo/actions/unirefund/FinanceService/post-actions";
 import type {FinanceServiceResource} from "src/language-data/unirefund/FinanceService";
 import VatStatementInformation from "../../[vatStatementId]/information/_components/vat-statement-information";
 import TaxFreeTagTable from "../../[vatStatementId]/tax-free-tags/_components/table";
@@ -27,7 +27,7 @@ export default function VatStatementForm({
   merchantList,
 }: {
   languageData: FinanceServiceResource;
-  merchantList: UniRefund_CRMService_Merchants_MerchantDto[];
+  merchantList: UniRefund_CRMService_Merchants_MerchantListResponseDto[];
 }) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -103,7 +103,7 @@ export default function VatStatementForm({
                   }}
                   useDefaultSubmit={false}
                   widgets={{
-                    Merchant: CustomComboboxWidget<UniRefund_CRMService_Merchants_MerchantDto>({
+                    Merchant: CustomComboboxWidget<UniRefund_CRMService_Merchants_MerchantListResponseDto>({
                       languageData,
                       list: merchantList,
                       selectIdentifier: "id",

@@ -30,6 +30,7 @@ const DEFAULT_FORMDATA: CreateTaxFreeDto = {
     type: "WORK",
     isPrimary: true,
   },
+  vatNumber: "0",
   address: {
     isPrimary: true,
     type: "WORK",

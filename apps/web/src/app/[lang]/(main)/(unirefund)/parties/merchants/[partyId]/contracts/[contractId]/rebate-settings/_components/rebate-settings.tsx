@@ -1,5 +1,9 @@
 "use client";
 
+import {postMerchantContractHeaderRebateSettingByHeaderIdApi} from "@repo/actions/unirefund/ContractService/post-actions";
+import {SchemaForm} from "@repo/ayasofyazilim-ui/organisms/schema-form";
+import {createUiSchemaWithResource} from "@repo/ayasofyazilim-ui/organisms/schema-form/utils";
+import {CustomComboboxWidget} from "@repo/ayasofyazilim-ui/organisms/schema-form/widgets";
 import {
   $UniRefund_ContractService_Rebates_RebateSettings_RebateSettingUpSertDto as $RebateSettingUpSertDto,
   type UniRefund_ContractService_Rebates_RebateTableHeaders_RebateTableHeaderInformationDto as AssignableRebateTableHeaders,
@@ -8,12 +12,8 @@ import {
 } from "@repo/saas/ContractService";
 import type {
   UniRefund_CRMService_Affiliations_AffiliationListResponseDto,
-  UniRefund_CRMService_Merchants_MerchantDto,
+  UniRefund_CRMService_Merchants_MerchantListResponseDto,
 } from "@repo/saas/CRMService";
-import {postMerchantContractHeaderRebateSettingByHeaderIdApi} from "@repo/actions/unirefund/ContractService/post-actions";
-import {SchemaForm} from "@repo/ayasofyazilim-ui/organisms/schema-form";
-import {createUiSchemaWithResource} from "@repo/ayasofyazilim-ui/organisms/schema-form/utils";
-import {CustomComboboxWidget} from "@repo/ayasofyazilim-ui/organisms/schema-form/widgets";
 import {handlePostResponse} from "@repo/utils/api";
 import {isActionGranted, useGrantedPolicies} from "@repo/utils/policies";
 import {useRouter} from "next/navigation";
@@ -31,7 +31,7 @@ export function RebateSettings({
   languageData: ContractServiceResource;
   rebateSettings: RebateSettingDto | undefined;
   rebateTableHeaders: AssignableRebateTableHeaders[];
-  subMerchants: UniRefund_CRMService_Merchants_MerchantDto[];
+  subMerchants: UniRefund_CRMService_Merchants_MerchantListResponseDto[];
   individuals: UniRefund_CRMService_Affiliations_AffiliationListResponseDto[];
   contractId: string;
 }) {
@@ -117,7 +117,7 @@ export function RebateSettings({
           selectIdentifier: "id",
           selectLabel: "name",
         }),
-        subMerchants: CustomComboboxWidget<UniRefund_CRMService_Merchants_MerchantDto>({
+        subMerchants: CustomComboboxWidget<UniRefund_CRMService_Merchants_MerchantListResponseDto>({
           list: subMerchants,
           languageData,
           selectIdentifier: "id",

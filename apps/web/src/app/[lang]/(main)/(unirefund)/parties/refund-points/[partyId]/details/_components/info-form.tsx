@@ -25,7 +25,8 @@ export function RefundPointForm({
   taxOffices: TaxOfficeDto[];
 }) {
   const {lang, partyId} = useParams<{lang: string; partyId: string}>();
-  const isHeadquarter = refundPointDetails.parentId === null || typeof refundPointDetails.parentId === "undefined";
+  const isHeadquarter = refundPointDetails.typeCode === "HEADQUARTER";
+  console.log(refundPointDetails);
   const disabled = {
     "ui:options": {
       readOnly: true,
@@ -39,7 +40,7 @@ export function RefundPointForm({
     extend: {
       "ui:className": "grid md:grid-cols-2 gap-4 items-end",
       name: {
-        ...(isHeadquarter && {"ui:className": "col-span-full"}),
+        "ui:className": "col-span-full",
       },
       taxOfficeId: {
         "ui:widget": "taxOfficeWidget",
@@ -58,10 +59,6 @@ export function RefundPointForm({
       vatNumber: {
         ...(!isHeadquarter && disabled),
       },
-      parentId: {
-        ...(isHeadquarter && {"ui:widget": "hidden"}),
-        ...disabled,
-      },
     },
   });
   const router = useRouter();
@@ -73,7 +70,6 @@ export function RefundPointForm({
       disabled={isPending}
       formData={{
         ...refundPointDetails,
-        parentId: refundPointDetails.parentName || "",
         name: refundPointDetails.name || "",
       }}
       locale={lang}
@@ -82,24 +78,13 @@ export function RefundPointForm({
         startTransition(() => {
           void putRefundPointByIdApi({
             id: partyId,
-            requestBody: {
-              ...formData,
-              parentId: refundPointDetails.parentId,
-            },
+            requestBody: formData,
           }).then((res) => {
             handlePutResponse(res, router);
           });
         });
       }}
-      schema={{
-        ...$UpdateRefundPointDto,
-        properties: {
-          ...$UpdateRefundPointDto.properties,
-          parentId: {
-            type: "string",
-          },
-        },
-      }}
+      schema={$UpdateRefundPointDto}
       submitText={languageData["Form.RefundPoint.Update"]}
       uiSchema={uiSchema}
       widgets={{

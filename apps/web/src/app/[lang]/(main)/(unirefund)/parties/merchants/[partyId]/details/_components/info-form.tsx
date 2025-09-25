@@ -64,10 +64,6 @@ export function MerchantForm({
       vatNumber: {
         ...(!isHeadquarter && disabled),
       },
-      parentId: {
-        ...(isHeadquarter && {"ui:widget": "hidden"}),
-        ...disabled,
-      },
     },
   });
   const router = useRouter();
@@ -79,9 +75,7 @@ export function MerchantForm({
       disabled={isPending}
       formData={{
         ...merchantDetails,
-        parentId: merchantDetails.parentName || "",
         name: merchantDetails.name || "",
-        typeCode: merchantDetails.typeCode || "HEADQUARTER",
       }}
       locale={lang}
       onSubmit={({formData}) => {
@@ -89,24 +83,13 @@ export function MerchantForm({
         startTransition(() => {
           void putMerchantByIdApi({
             id: partyId,
-            requestBody: {
-              ...formData,
-              parentId: merchantDetails.parentId,
-            },
+            requestBody: formData,
           }).then((res) => {
             handlePutResponse(res, router);
           });
         });
       }}
-      schema={{
-        ...$UpdateMerchantDto,
-        properties: {
-          ...$UpdateMerchantDto.properties,
-          parentId: {
-            type: "string",
-          },
-        },
-      }}
+      schema={$UpdateMerchantDto}
       submitText={languageData["Form.Merchant.Update"]}
       uiSchema={uiSchema}
       widgets={{
