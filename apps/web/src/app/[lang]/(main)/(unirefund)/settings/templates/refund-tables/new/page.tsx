@@ -3,7 +3,7 @@ import {isUnauthorized} from "@repo/utils/policies";
 import ErrorComponent from "@repo/ui/components/error-component";
 import {getMerchantsApi} from "@repo/actions/unirefund/CrmService/actions";
 import {getResourceData} from "src/language-data/unirefund/ContractService";
-import RebateTableHeaderUpdateForm from "./_components/form";
+import RefundTableForm from "./_components/form";
 
 async function getApiRequests() {
   try {
@@ -34,6 +34,7 @@ export default async function Page({params}: {params: {lang: string}}) {
     return <ErrorComponent languageData={languageData} message={apiRequests.message || "Unknown error occurred"} />;
   }
 
-  const [merchantsResponse] = apiRequests.data;
-  return <RebateTableHeaderUpdateForm languageData={languageData} merchants={merchantsResponse.data.items || []} />;
+  // const [merchantsResponse] = apiRequests.data;
+  return <RefundTableForm />;
+  //  merchants={merchantsResponse.data.items || []} />;
 }
